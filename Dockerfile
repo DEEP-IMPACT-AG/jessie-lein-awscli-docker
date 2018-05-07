@@ -1,9 +1,15 @@
-FROM clojure:lein-2.7.1
+FROM clojure:lein-2.8.1
+
+ENV LANG=C.UTF-8 \
+    PATH=/opt/conda/bin:${PATH}
 
 RUN   apt-get update \
-   && apt-get install -y python-pip libyaml-dev python-dev zip \
-   && pip install awscli \
-   && VER="17.05.0-ce" \
-   && curl -L -o /tmp/docker-$VER.tgz https://get.docker.com/builds/Linux/x86_64/docker-$VER.tgz \
-   && tar -xz -C /tmp -f /tmp/docker-$VER.tgz \
-   && mv /tmp/docker/* /usr/bin
+   && apt-get install -y iptables libdevmapper1.02.1 libltdl7 \
+   && DEB="docker-ce_18.03.1~ce-0~debian_amd64.deb" \
+   && wget https://download.docker.com/linux/debian/dists/jessie/pool/stable/amd64/${DEB} \
+   && dpkg -i ${DEB} \
+   && rm -f ${DEB} \
+   && wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /root/miniconda.sh \
+   && /bin/bash /root/miniconda.sh -b -p /opt/conda \
+   && rm -f /root/miniconda.sh \
+   && pip install awscli
