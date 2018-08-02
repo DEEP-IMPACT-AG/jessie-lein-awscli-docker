@@ -12,6 +12,6 @@ RUN   apt-get update \
    && wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /root/miniconda.sh \
    && /bin/bash /root/miniconda.sh -b -p /opt/conda \
    && rm -f /root/miniconda.sh \
-   && pip install awscli ansible \
+   && pip install awscli ansible boto3 \
    && apt-get autoremove -y \
    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
